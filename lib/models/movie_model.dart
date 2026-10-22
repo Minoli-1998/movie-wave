@@ -32,7 +32,7 @@ class Movie {
   });
 
   // convert from json
-  factory Movie.froJson(Map<String, dynamic> json) {
+  factory Movie.fromJson(Map<String, dynamic> json) {
     return Movie(
       adult: json["adult"] ?? false,
       backdropPath: json["backdrop_path"] as String?,
