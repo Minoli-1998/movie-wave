@@ -68,7 +68,7 @@ class _NowPlayingPageState extends State<NowPlayingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Now Playing Page")),
+      appBar: AppBar(title: Text("Now Playing Movies")),
       body: _isLoding
           ? Center(child: CircularProgressIndicator())
           : Column(

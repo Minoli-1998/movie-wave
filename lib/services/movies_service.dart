@@ -56,4 +56,30 @@ class MoviesService {
       return [];
     }
   }
+
+  // method to search movie
+  // https://api.themoviedb.org/3/search/movie?query=Avengers&api_key=ad71dd68b9e3a63fc0cd6ed2681b93fc
+  Future<List<Movie>> searchMovieByName(String query) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/search/movie?query=$query&api_key=$_apiKey",
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> resultList = data["results"];
+
+        return resultList.map((movieData) {
+          return Movie.fromJson(movieData);
+        }).toList();
+      } else {
+        throw Exception("Failed to find the movie by name");
+      }
+    } catch (error) {
+      print("Failed to find movie by name $error");
+      throw Exception("$error");
+    }
+  }
 }
