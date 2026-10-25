@@ -11,7 +11,7 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Movie> _movieList = [];
+  final List<Movie> _movieList = [];
   int _currentPage = 1;
   bool _isLoading = false;
   bool _hasMore = true;
@@ -45,7 +45,7 @@ class _MainPageState extends State<MainPage> {
         }
       });
     } catch (error) {
-      print("Error : $error");
+      throw Exception("Error in fetching movies $error");
     } finally {
       setState(() {
         _isLoading = false;
