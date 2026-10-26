@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviewave/models/movie_model.dart';
+import 'package:moviewave/pages/single_movie_details_page.dart';
 import 'package:moviewave/services/movies_service.dart';
 import 'package:moviewave/widgets/search_movie_card.dart';
 
@@ -44,6 +45,12 @@ class _SearchPageState extends State<SearchPage> {
         _isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _searchController.dispose();
   }
 
   @override
@@ -107,13 +114,25 @@ class _SearchPageState extends State<SearchPage> {
                     Movie movie = _searchMoviesList[index];
                     return Column(
                       children: [
-                        SearchMovieCard(
-                          imagePath: movie.posterPath!,
-                          title: movie.title,
-                          releaseDate: movie.releaseDate,
-                          overview: movie.overview,
-                          averageVote: movie.voteAverage,
-                          popularity: movie.popularity,
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return SingleMovieDetailsPage(movie: movie);
+                                },
+                              ),
+                            );
+                          },
+                          child: SearchMovieCard(
+                            imagePath: movie.posterPath!,
+                            title: movie.title,
+                            releaseDate: movie.releaseDate,
+                            overview: movie.overview,
+                            averageVote: movie.voteAverage,
+                            popularity: movie.popularity,
+                          ),
                         ),
                       ],
                     );

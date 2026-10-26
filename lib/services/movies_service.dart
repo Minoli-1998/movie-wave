@@ -82,4 +82,86 @@ class MoviesService {
       throw Exception("$error");
     }
   }
+
+  // method fetch similar movies
+  // https://api.themoviedb.org/3/movie/43641/similar?api_key=ad71dd68b9e3a63fc0cd6ed2681b93fc
+  Future<List<Movie>> fetchSimilarMovies(int id) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$id/similar?api_key=$_apiKey",
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> resultList = data["results"];
+
+        return resultList
+            .map((movieData) => Movie.fromJson(movieData))
+            .toList();
+      } else {
+        throw Exception("Failed to load similar movies");
+      }
+    } catch (error) {
+      print("Error : $error");
+      return [];
+    }
+  }
+
+  // method to fetch recommend movies
+  // https://api.themoviedb.org/3/movie/299536/recommendations?api_key=ad71dd68b9e3a63fc0cd6ed2681b93fc
+  Future<List<Movie>> fetchRecommendedMovies(int id) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$id/recommendations?api_key=$_apiKey",
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> resultList = data["results"];
+
+        return resultList
+            .map((movieData) => Movie.fromJson(movieData))
+            .toList();
+      } else {
+        throw Exception("Failed to load recommended movies");
+      }
+    } catch (error) {
+      print("Error : $error");
+      return [];
+    }
+  }
+
+  // method to fetch movie images using id
+  // https://api.themoviedb.org/3/movie/299536/images?api_key=ad71dd68b9e3a63fc0cd6ed2681b93fc
+  Future<List<String>> fetchMovieImageFromMovieId(int movieId) async {
+    try {
+      final response = await http.get(
+        Uri.parse(
+          "https://api.themoviedb.org/3/movie/$movieId/images?api_key=$_apiKey",
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        final List<dynamic> backdropsList = data["backdrops"];
+
+        return backdropsList
+            .take(10)
+            .map(
+              (imageData) =>
+                  "https://image.tmdb.org/t/p/w500${imageData["file_path"]}",
+            )
+            .toList();
+      } else {
+        throw Exception("Failed to load images");
+      }
+    } catch (error) {
+      print("Error in fetching images : $error");
+      return [];
+    }
+  }
 }

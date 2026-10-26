@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moviewave/models/movie_model.dart';
+import 'package:moviewave/pages/single_movie_details_page.dart';
 import 'package:moviewave/services/movies_service.dart';
 import 'package:moviewave/widgets/movie_card.dart';
 
@@ -95,13 +96,25 @@ class _MainPageState extends State<MainPage> {
 
             Movie movie = _movieList[index];
 
-            return MovieCard(
-              imagePath: movie.posterPath!,
-              title: movie.title,
-              releaseDate: movie.releaseDate,
-              overview: movie.overview,
-              averageVote: movie.voteAverage,
-              popularity: movie.popularity,
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return SingleMovieDetailsPage(movie: movie);
+                    },
+                  ),
+                );
+              },
+              child: MovieCard(
+                imagePath: movie.posterPath!,
+                title: movie.title,
+                releaseDate: movie.releaseDate,
+                overview: movie.overview,
+                averageVote: movie.voteAverage,
+                popularity: movie.popularity,
+              ),
             );
           },
         ),
